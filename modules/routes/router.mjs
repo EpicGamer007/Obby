@@ -24,7 +24,7 @@ const cspHeaders = `
 	object-src 'none';
 	prefetch-src 'none';
 	script-src 'none';
-	script-src-elem https://3js.epicgamer007.repl.co/scripts/ https://3js.epicgamer007.repl.co/lib/;
+	script-src-elem https://Obby.epicgamer007.repl.co/scripts/ https://Obby.epicgamer007.repl.co/lib/;
 	script-src-attr 'none';
 	worker-src 'none';
 	`.replace(/\s/g, ' ');
