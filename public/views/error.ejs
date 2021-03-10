@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%-include("./components/head", {title: errorType})%>
+	</head>
+
+	<body>
+	
+		<%-include("./components/noscript.ejs")%>
+
+		<main>
+
+			<h1><%=errorType%></h1>
+			<h2><%=errorMessage%></h2>
+			<a href="/">Go back</a>
+
+		<main>
+
+	</body>
+
+</html>
