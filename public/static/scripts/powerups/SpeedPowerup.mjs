@@ -26,6 +26,7 @@ export default class SpeedPowerup extends Powerup {
 		this.vars.maxSpeed = 0.3;
 		this.vars.s = 0.3;
 		this.vars.shiftSpeed = 0.2;
+		this.vars.fs = Math.min(this.vars.fs, this.vars.maxSpeed);
 
 		this.vars.camera.fov = 80;
 		this.vars.camera.updateProjectionMatrix();

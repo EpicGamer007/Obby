@@ -239,7 +239,7 @@ function addDir(x, z) {
 	dir.add(new Three.Vector3(x, 0, z));
 }
 
-onkeydown = e => {
+onkeypress = e => {
 
 	if(keys.has(e.code)||!possibleKeys.has(e.code)) return;
 	if(keys.size == 0) dir.set(0, 0, 0);
@@ -287,7 +287,7 @@ onkeydown = e => {
 };
 
 function giveSurprise() {
-	window.location.href = "https://Surprise-1.dakshg.repl.co";
+	location.href = "https://Surprise-1.dakshg.repl.co";
 }
 
 onkeyup = e => {
