@@ -1,8 +1,7 @@
 # Ideas
 
-* Add cooldown bar when powerup is active
+* Score
 * Lasers
-* Add randomness to size of platforms
 * Elmo sound effects
 * Moving asteroids in background
 * Different shaped platforms

@@ -19,10 +19,10 @@ app.use(helmet({
 	xssFilter: false,
 }));
 
-app.use(express.urlencoded({ extended: true, limit: "100kb" }));
-app.use(express.json({ limit: "100kb" }));
+app.use(express.json({ limit: "1kb" }));
 
 app.use(staticRouter);
+
 app.use(router);
 
 {

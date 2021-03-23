@@ -92,6 +92,7 @@ class UI {
 				continue;
 			}
 
+			powerupObject.obj.apply();
 
 			ctx.fillStyle = `#${powerupObject.obj.mesh.material.emissive.getHexString()}`;
 			const params = [

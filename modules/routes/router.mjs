@@ -1,5 +1,8 @@
 import express from "express";
 const router = express.Router();
+
+import { randomBytes } from "crypto";
+
 import path from "path";
 import { errors, __dirname } from "../../config.mjs"
 
@@ -34,6 +37,8 @@ const httpHeaders = {
 	"x-content-type-options": "nosniff"
 };
 
+const validTokens = [];
+
 router.use(rateLimit({
 	windowMs: 60 * 1000,
 	max: 60
@@ -50,9 +55,31 @@ router.use((_req, res, next) => {
 });
 
 router.get("/", (req, res) => {
+
+	const newToken = randomBytes(100).toString("base64");
+
+	validTokens.push(newToken);
+
+	req.on("close", () => {
+		// request closed unexpectedly
+
+		validTokens.splice(validTokens.indexOf(newToken));
+
+	});
+
+	req.on("end", () => {
+		// request ended normally
+		
+		validTokens.splice(validTokens.indexOf(newToken));
+	});
+
 	res.set("Content-type", "text/html; charset=UTF-8");
 
 	res.render("index");
+});
+
+router.post("/score", (req, res) => {
+	console.log(req.body);
 });
 
 router.get("*", (req, res) => {
