@@ -13,12 +13,6 @@ export default class PowerupManager {
 		this.limit = 50;
 		this.spacing = 200; // 200
 
-		this.meshes = [];
-
-		startingPowerups.forEach(powerup => {
-			this.meshes.push(powerup.mesh);
-		});
-
 	}
 
 	/* addPowerup() {
@@ -26,13 +20,12 @@ export default class PowerupManager {
 	} */
 
 	remove() {
-		this.scene.remove(this.powerups.shift().mesh);
-		this.meshes.shift();
+		this.scene.remove(this.powerups.shift());
 	}
 
 	render() {
 		
-		if(this.meshes.length && this.wall.position.z > this.meshes[0].position.z) {
+		if(this.powerups.length && this.wall.position.z > this.powerups[0].position.z) {
 			this.remove();
 		}
 
@@ -42,10 +35,17 @@ export default class PowerupManager {
 
 		if(this.player.position.z > this.limit) {
 			let newPowerup = new [Powerups.JumpPowerup, Powerups.SpeedPowerup, Powerups.ScareElmoPowerup, Powerups.FlyPowerup][Math.floor(rand(0, 4))](this.vars);
-			newPowerup.mesh.position.set(rand(-10, 10), 10+rand(-5, 5), this.limit+50);
+			newPowerup.position.set(rand(-10, 10), 10+rand(-5, 5), this.limit+50);
 			this.powerups.push(newPowerup);
-			this.meshes.push(newPowerup.mesh);
-			this.scene.add(newPowerup.mesh);
+			this.scene.add(newPowerup);
+			/*
+				powerupManager.add(hello);
+				powerupManager.add(world);
+
+				powerupManager.children == [hello, world]
+
+				scene.add(powerupManager)
+			 */
 			this.limit += this.spacing;
 		}
 	}

@@ -1,10 +1,10 @@
 import { Mesh } from '/lib/three.min.mjs';
 import rand from '/scripts/rand.mjs';
 
-export default class Powerup {
+export default class Powerup extends Mesh {
 	
 	constructor(geo, mat, cooldown, vars) {
-		this.mesh = new Mesh(geo, mat);
+		super(geo, mat);
 		this.cooldown = cooldown;
 		this.vars = vars;
 		this.dx = (Math.random() > 0.5?1:-1) * 0.1;
@@ -12,8 +12,8 @@ export default class Powerup {
 	}
 
 	render() {
-		this.mesh.rotation.x += this.dx;
-		this.mesh.rotation.y += this.dy;
+		this.rotation.x += this.dx;
+		this.rotation.y += this.dy;
 	}
 
 	hit() {

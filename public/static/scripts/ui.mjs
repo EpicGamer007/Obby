@@ -94,7 +94,7 @@ class UI {
 
 			powerupObject.obj.apply();
 
-			ctx.fillStyle = `#${powerupObject.obj.mesh.material.emissive.getHexString()}`;
+			ctx.fillStyle = `#${powerupObject.obj.material.emissive.getHexString()}`;
 			const params = [
 				i * this.barWidth + this.xBarMargin,
 				h - this.yBarMargin - (1 - timePassed / cooldown) * this.barHeight,

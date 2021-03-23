@@ -208,13 +208,15 @@ function render(time) {
 
 	[down, up, dirRay].forEach(ray => {
 
-		objs = ray.intersectObjects(powerupManager.meshes);
+		objs = ray.intersectObjects(powerupManager.powerups);
 
 		if(objs.length) {
 			for(const obj of objs) {
-				const powerup = powerupManager.powerups[powerupManager.meshes.indexOf(obj.object)];
-				powerup.hit();
-				ui.addPowerupBar(powerup);
+				/* const powerup = powerupManager.powerups[powerupManager.meshes.indexOf(obj.object)];
+				powerup.hit(); */
+				console.log(obj);
+				obj.object.hit();
+				ui.addPowerupBar(obj.object);
 				powerupManager.remove();
 			}
 		}
