@@ -1,12 +1,12 @@
 import * as Powerups from '/scripts/powerups/Powerups.mjs';
 import rand from '/scripts/rand.mjs';
+import { Object3D } from '/lib/three.min.mjs';
 
-export default class PowerupManager {
+export default class PowerupManager extends Object3D {
 
-	constructor(startingPowerups = [], scene, player, wall, vars) {
-
-		this.powerups = startingPowerups;
-		this.scene = scene;
+	/*constructor(startingPowerups = [], scene, player, wall, vars) {*/
+	constructor(player, wall, vars) {
+		super();
 		this.player = player;
 		this.vars = vars;
 		this.wall = wall;
@@ -19,25 +19,26 @@ export default class PowerupManager {
 
 	} */
 
-	remove() {
-		this.scene.remove(this.powerups.shift());
+	removePowerup() {
+		// this.scene.remove(this.children.shift());
+		this.children.shift();
+		// this.remove(this.children[0]);
 	}
 
 	render() {
 		
-		if(this.powerups.length && this.wall.position.z > this.powerups[0].position.z) {
-			this.remove();
+		if(this.children.length && this.wall.position.z > this.children[0].position.z) {
+			this.removePowerup();
 		}
 
-		for (const powerup of this.powerups) {
+		for (const powerup of this.children) {
 			powerup.render();
 		}
 
 		if(this.player.position.z > this.limit) {
 			let newPowerup = new [Powerups.JumpPowerup, Powerups.SpeedPowerup, Powerups.ScareElmoPowerup, Powerups.FlyPowerup][Math.floor(rand(0, 4))](this.vars);
 			newPowerup.position.set(rand(-10, 10), 10+rand(-5, 5), this.limit+50);
-			this.powerups.push(newPowerup);
-			this.scene.add(newPowerup);
+			this.add(newPowerup);
 			/*
 				powerupManager.add(hello);
 				powerupManager.add(world);

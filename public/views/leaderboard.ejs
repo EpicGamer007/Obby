@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        
+		<%-include("./components/head", {title: "Escape Elmo Game"})%>
+		
+    </head>
+
+    <body>
+		<main>
+			<a href="/">Go play the game</a>
+			<ol>
+				<% for(let i = leaders.length - 1; i > -1; i--) { %>
+					<li><%=leaders[i].user%>: <%=leaders[i].score%></li>
+				<% } %>
+			</ol>
+			
+		</main>
+	</body>
+</html>

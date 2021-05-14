@@ -8,7 +8,7 @@ body {
     font-size: 2em;
 }
 
-#c, #ui{
+#c, #ui {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -24,5 +24,54 @@ body {
 	top: 10px;
 	right: 10px;
 	text-align: center;
-	z-index: 100;
+	z-index: 1;
+}
+
+button {
+	position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	
+	outline: none;
+	z-index: 10;
+	background-color: #464950;
+	color: ghostwhite;
+	border-radius: 2px 5px;
+	border: 1px solid ghostwhite;
+	font-size: 10rem;
+	transition: 200ms all;
+}
+
+button:hover, button:focus {
+	cursor: pointer;
+	padding-left: 3rem;
+	padding-right: 3rem;
+	border: 3px solid ghostwhite;
+}
+
+button:active {
+	outline: none;
+}
+
+#pause-menu {
+	display: none;
+}
+
+#score {
+	position: fixed;
+	left: 2rem;
+	top: 2rem;
+}
+
+.center {
+	position: fixed;
+	top: 15px;
+	right: 50%;
+	z-index: 15;
+	font-size: 5vh;
+}
+
+.center a {
+	color: ghostwhite;
 }
