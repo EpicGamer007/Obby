@@ -8,7 +8,7 @@ body {
     font-size: 2em;
 }
 
-#c, #ui {
+#c, #ui, .center {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -65,13 +65,14 @@ button:active {
 }
 
 .center {
+	z-index: 2;
+	font-size: 5vh;
+}
+
+a {
 	position: fixed;
 	top: 15px;
 	right: 50%;
 	z-index: 15;
-	font-size: 5vh;
-}
-
-.center a {
 	color: ghostwhite;
 }

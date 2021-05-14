@@ -152,7 +152,7 @@ let gameOver = () => {
 	main.insertBefore(s, userInfo);
 	const a = document.createElement("a");
 	a.innerText = "Leaderboard";a.href = "/leaderboard";
-	document.getElementsByClassName("center")[0].insertBefore(a, document.getElementById("chilc"));
+	main.insertBefore(a, document.getElementById("center"));
 
 	fetch("/score", {
 		method: "POST",
