@@ -338,12 +338,6 @@ onkeypress = e => {
 			vars.j = vars.shiftJump;
 			vars.fj = vars.j;
 			break;
-		case 'KeyR':
-			player.position.set(0, 5, platformManager.limit - platformManager.originalLimit + (platformManager.spacing*5));
-			vars.fg = 0;
-			vars.fs = 0;
-			vars.fj = 0;
-			break;
 		case 'KeyP':
 			game.paused = !game.paused;
 	}
