@@ -79,7 +79,7 @@ scene.add(player);
 
 let dir = new Three.Vector3();
 let keys = new Set();
-const possibleKeys = new Set(['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'KeyA', 'KeyD', 'KeyS', 'KeyW', 'Space', 'ShiftLeft', 'ShiftRight', 'KeyR']);
+const possibleKeys = new Set(['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'KeyA', 'KeyP', 'KeyD', 'KeyS', 'KeyW', 'Space', 'ShiftLeft', 'ShiftRight', 'KeyR']);
 
 const stats = new Stats();
 stats.showPanel(0);
@@ -131,14 +131,84 @@ const vars = {
 	camera
 };
 
-const powerupManager = new PowerupManager([], scene, player, wall, vars);
+const powerupManager = new PowerupManager(player, wall, vars);
+scene.add(powerupManager);
+
 const platformManager = new PlatformManager(scene, player, wall);
+
+let gameOver = () => {
+	document.exitPointerLock();
+	const score = Math.max(0, Math.floor(player.position.z/10));
+	const main = document.getElementsByTagName("main")[0];
+	const replay = document.createElement("button");
+	replay.id = "replay";
+	replay.innerText = "Restart";
+	replay.addEventListener("click", (e) => {
+		location.reload();
+	});
+	main.appendChild(replay);
+	const s = document.createElement("p");
+	s.innerText = "Score: " + score;s.id = "score";
+	main.insertBefore(s, userInfo);
+	const a = document.createElement("a");
+	a.innerText = "Leaderboard";a.href = "/leaderboard";
+	document.getElementsByClassName("center")[0].insertBefore(a, document.getElementById("chilc"));
+
+	fetch("/score", {
+		method: "POST",
+		body: JSON.stringify({score: score}),
+		headers: {
+			'Content-Type': 'application/json'
+		},
+	}).then(() => {
+		main.appendChild(
+			document.createElement("p")
+		).innerText = "Updated score";
+	}).catch((err) => {
+		main.appendChild(
+			document.createElement("p")
+		).innerHTML = "Error adding score:<br> " + err;
+	});
+	
+	console.log(score);
+}
+
+let game = {
+	get paused() {
+		return this._paused;
+	},
+
+	set paused(val) {
+		if(!val) {
+			this.reqID = requestAnimationFrame(render);
+			canvas.requestPointerLock();
+		} else {
+			document.exitPointerLock();
+			cancelAnimationFrame(this.reqID);
+		}
+
+		document.getElementById("pause-menu").style.display = val ? "block" : "none";
+
+		this._paused = val;
+	}
+};
+
+game.paused = false;
+
+document.getElementById("resume").onclick = () => {
+	game.paused = false;
+};
 
 function render(time) {
 
-	if(player.position.y < -100000) {
+	if(player.position.y < -50000) {
 		giveSurprise();
 		return;
+	}
+
+	if((player.position.y < -200 || player.position.z < wall.position.z) && gameOver) {
+		gameOver();
+		gameOver = null;
 	}
 
 	stats.begin();
@@ -208,14 +278,13 @@ function render(time) {
 
 	[down, up, dirRay].forEach(ray => {
 
-		objs = ray.intersectObjects(powerupManager.meshes);
+		objs = ray.intersectObjects(powerupManager.children);
 
 		if(objs.length) {
 			for(const obj of objs) {
-				const powerup = powerupManager.powerups[powerupManager.meshes.indexOf(obj.object)];
-				powerup.hit();
-				ui.addPowerupBar(powerup);
-				powerupManager.remove();
+				obj.object.hit();
+				ui.addPowerupBar(obj.object);
+				powerupManager.removePowerup();
 			}
 		}
 
@@ -229,11 +298,9 @@ function render(time) {
 
 	stats.end();
 
-	requestAnimationFrame(render);
+	game.reqID = requestAnimationFrame(render);
 
 }
-
-requestAnimationFrame(render);
 
 function addDir(x, z) {
 	dir.add(new Three.Vector3(x, 0, z));
@@ -276,6 +343,9 @@ onkeypress = e => {
 			vars.fg = 0;
 			vars.fs = 0;
 			vars.fj = 0;
+			break;
+		case 'KeyP':
+			game.paused = !game.paused;
 	}
 
 	if(!'Space ShiftLeft ShiftRight'.includes(e.code)) { 
@@ -318,7 +388,7 @@ onkeyup = e => {
 			vars.fs = vars.s;
 			vars.j = vars.maxJump;
 			vars.fj = vars.j;
-			powerupManager.powerups.forEach(powerup => {
+			powerupManager.children.forEach(powerup => {
 				if(powerup.constructor.name == "FlyPowerup") {
 					vars.g = 0.005;
 				}
@@ -337,7 +407,8 @@ onmousemove = e => {
 }
 
 document.getElementById('ui').onclick = () => {
-	canvas.requestPointerLock();
+	if(!game.paused)
+		canvas.requestPointerLock();
 };
 
 function makePlatform(w, h, pos, emissive, color = 0x000000) {

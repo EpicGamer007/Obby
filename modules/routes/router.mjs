@@ -10,6 +10,16 @@ const PUBLIC_PATH = path.join(__dirname, "public");
 
 import rateLimit from "express-rate-limit";
 
+import db from "../replitdb-client.mjs";
+
+function auth(req, res, next) {
+	if(req.get("X-Replit-User-Name")) {
+		next();
+	} else {
+		res.redirect("/login");
+	}
+}
+
 const cspHeaders = `
 	upgrade-insecure-requests;
 	default-src 'self' https://repl.it;
@@ -18,7 +28,7 @@ const cspHeaders = `
 	style-src-attr 'none';
 	font-src https://fonts.gstatic.com;
 	child-src 'none';
-	connect-src https://repl.it;
+	connect-src https://Obby.epicgamer007.repl.co/;
 	frame-src 'none';
 	manifest-src 'none';
 	frame-ancestors sameorgin;
@@ -27,7 +37,7 @@ const cspHeaders = `
 	object-src 'none';
 	prefetch-src 'none';
 	script-src 'none';
-	script-src-elem https://Obby.epicgamer007.repl.co/scripts/ https://Obby.epicgamer007.repl.co/lib/;
+	script-src-elem https://Obby.epicgamer007.repl.co/scripts/ https://Obby.epicgamer007.repl.co/lib/ 'unsafe-inline';
 	script-src-attr 'none';
 	worker-src 'none';
 	`.replace(/\s/g, ' ');
@@ -36,8 +46,6 @@ const httpHeaders = {
 	"Content-Security-Policy": cspHeaders,
 	"x-content-type-options": "nosniff"
 };
-
-const validTokens = [];
 
 router.use(rateLimit({
 	windowMs: 60 * 1000,
@@ -54,32 +62,49 @@ router.use((_req, res, next) => {
 	next();
 });
 
-router.get("/", (req, res) => {
-
-	const newToken = randomBytes(100).toString("base64");
-
-	validTokens.push(newToken);
-
-	req.on("close", () => {
-		// request closed unexpectedly
-
-		validTokens.splice(validTokens.indexOf(newToken));
-
-	});
-
-	req.on("end", () => {
-		// request ended normally
-		
-		validTokens.splice(validTokens.indexOf(newToken));
-	});
+router.get("/", auth, (req, res) => {
 
 	res.set("Content-type", "text/html; charset=UTF-8");
 
 	res.render("index");
 });
 
-router.post("/score", (req, res) => {
-	console.log(req.body);
+router.get("/login", (req, res) => {
+	if (req.get("X-Replit-User-Id")) {
+		res.redirect("/");
+	} else {
+		res.render("login");
+	}
+});
+
+router.get("/leaderboard", async (req, res) => {
+	const resp = await db.getAll();
+	let leaders = [];
+	for(const key in resp) {
+		leaders.push({
+			user: key,
+			score: resp[key]
+		});
+	}
+	leaders.sort((a, b) => {
+		return a.score - b.score;
+	});
+	res.render("leaderboard", {
+		leaders
+	});
+});
+
+router.post("/score", auth, (req, res) => {
+
+	db.get(req.get("X-Replit-User-Name")).then(resp => {
+		if(parseInt(resp) < req.body.score || resp == undefined || resp == null || resp.length < 1) {
+			db.set(req.get("X-Replit-User-Name"), `${req.body.score}`).then((resp) => {
+				console.log(resp);
+				res.json(resp);
+			});
+		}
+	});
+	
 });
 
 router.get("*", (req, res) => {
