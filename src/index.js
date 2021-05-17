@@ -1,18 +1,14 @@
 import express from "express";
 const app = express();
-
 import { createServer } from "http";
 const http = createServer(app);
 
 import helmet from "helmet";
+import { staticRouter, client } from "./modules/routers.js";
+import { serverSettings as config, __dirname } from "./config.js";
 
-import { staticRouter, router } from "./modules/routes.mjs";
-
-import { serverSettings as config, __dirname } from "./config.mjs";
-
-import path from "path";
-
-app.set("views", path.join(__dirname, "public", "views"));
+import { join } from "path";
+app.set("views", join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(helmet({
@@ -22,8 +18,7 @@ app.use(helmet({
 app.use(express.json({ limit: "1kb" }));
 
 app.use(staticRouter);
-
-app.use(router);
+app.use(client);
 
 {
 	const {

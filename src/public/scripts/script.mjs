@@ -5,6 +5,9 @@ import PowerupManager from '/scripts/PowerupManager.mjs';
 import PlatformManager from '/scripts/PlatformManager.mjs';
 import ui from '/scripts/ui.mjs';
 
+const scoreToken = window.token;
+window.token = undefined;
+
 onresize = () => location.reload();
 
 const userInfo = document.getElementById('user-info');
@@ -79,7 +82,7 @@ scene.add(player);
 
 let dir = new Three.Vector3();
 let keys = new Set();
-const possibleKeys = new Set(['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'KeyA', 'KeyP', 'KeyD', 'KeyS', 'KeyW', 'Space', 'ShiftLeft', 'ShiftRight', 'KeyR']);
+const possibleKeys = new Set(['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'KeyA', 'KeyP', 'KeyD', 'KeyS', 'KeyW', 'Space']);
 
 const stats = new Stats();
 stats.showPanel(0);
@@ -117,9 +120,7 @@ const startMaxSpeed = 0.3, startMaxJump = 0.4;
 
 const vars = {
 	maxSpeed: startMaxSpeed,
-	shiftSpeed: 0.1,
 	maxJump: startMaxJump,
-	shiftJump: 0.2,
 	pushback: 0.15,
 	g: 0.01,
 	fg: 0,
@@ -156,7 +157,7 @@ let gameOver = () => {
 
 	fetch("/score", {
 		method: "POST",
-		body: JSON.stringify({score: score}),
+		body: JSON.stringify({score: score, token: scoreToken}),
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -198,6 +199,10 @@ game.paused = false;
 document.getElementById("resume").onclick = () => {
 	game.paused = false;
 };
+
+/* setInterval(() => {
+	console.log(powerupManager.children);
+}, 500); */
 
 function render(time) {
 
@@ -272,20 +277,19 @@ function render(time) {
 
 		let normal = new Three.Vector3(0, 0, 1);
 		normal.applyQuaternion(objs[0].object.quaternion);
-		player.position.addScaledVector(normal, vars.pushback);
+		player.position.addScaledVector(normal, 	vars.pushback);
 
-	}
+	}			
 
 	[down, up, dirRay].forEach(ray => {
 
 		objs = ray.intersectObjects(powerupManager.children);
 
 		if(objs.length) {
-			for(const obj of objs) {
-				obj.object.hit();
-				ui.addPowerupBar(obj.object);
-				powerupManager.removePowerup();
-			}
+			objs[0].object.hit();
+			ui.addPowerupBar(objs[0].object);
+			console.log(objs[0].object);
+			powerupManager.removePowerup(objs[0].object);
 		}
 
 	});
@@ -331,18 +335,11 @@ onkeypress = e => {
 		case 'Space':
 			vars.fj = vars.j;
 			break;
-		case 'ShiftLeft':
-		case 'ShiftRight':
-			vars.s = vars.shiftSpeed;
-			vars.fs = vars.s;
-			vars.j = vars.shiftJump;
-			vars.fj = vars.j;
-			break;
 		case 'KeyP':
 			game.paused = !game.paused;
 	}
 
-	if(!'Space ShiftLeft ShiftRight'.includes(e.code)) { 
+	if(!'Space'.includes(e.code)) { 
 		vars.fs = vars.s;
 	}
 	
@@ -375,20 +372,6 @@ onkeyup = e => {
 				addDir(0, -1);
 		}
 
-	switch(e.code) {
-		case 'ShiftLeft':
-		case 'ShiftRight':
-			vars.s = vars.maxSpeed;
-			vars.fs = vars.s;
-			vars.j = vars.maxJump;
-			vars.fj = vars.j;
-			powerupManager.children.forEach(powerup => {
-				if(powerup.constructor.name == "FlyPowerup") {
-					vars.g = 0.005;
-				}
-			});
-	}
-
 	keys.delete(e.code);
 
 }
@@ -414,3 +397,13 @@ function makePlatform(w, h, pos, emissive, color = 0x000000) {
 	platform.position.set(pos.x, pos.y, pos.z);
 	return platform;
 }
+
+window.addEventListener("beforeunload", (evt) => {
+	fetch("/exit", {
+		method: "POST",
+		body: JSON.stringify({token: scoreToken}),
+		headers: {
+			'Content-Type': 'application/json'
+		},
+	});
+});

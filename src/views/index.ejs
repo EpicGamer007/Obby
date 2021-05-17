@@ -6,6 +6,10 @@
         
 		<%-include("./components/head", {title: "Escape Elmo Game"})%>
 
+		<script type="module">
+			window.token = "<%=token%>";
+		</script>
+
 		<script type="module" src="/scripts/script.mjs" defer></script>
 		
     </head>

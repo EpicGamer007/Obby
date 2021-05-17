@@ -170,6 +170,14 @@ while(new Date.getTime() - hitTime < powerup.cooldown * 1000) {
 }
 */
 
+	containsPowerup(powerup) {
+		for(const obj of this.powerupBars)
+			if(obj.obj.uuid == powerup.uuid)
+				return true;
+
+		return false;
+	}
+
 	addPowerupBar(obj) {
 
 		this.powerupBars.push({

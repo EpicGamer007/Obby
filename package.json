@@ -1,20 +1,37 @@
 {
-  "name": "3js",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.mjs",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.mjs"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "express-rate-limit": "^5.2.6",
-    "helmet": "^4.4.1",
-    "node-fetch": "^2.6.1"
-  }
+	"name": "Obby",
+	"type": "module",
+	"version": "1.0.0",
+	"description": "An Obby game",
+	"main": "index.js",
+	"scripts": {
+		"start": "node src",
+		"dev": "node --abort-on-uncaught-exception --throw-deprecation --trace-warnings --unhandled-rejections=strict src"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/EpicGamer007/Obby.git"
+	},
+	"keywords": [
+		"abhay",
+		"daksh",
+		"game",
+		"fun",
+		"obby",
+		"roblox",
+		"jump"
+	],
+	"author": "Abhay and Daksh",
+	"license": "AGPL-3.0-or-later",
+	"dependencies": {
+		"ejs": "^3.1.6",
+		"express": "^4.17.1",
+		"express-rate-limit": "^5.2.6",
+		"helmet": "^4.4.1",
+		"node-fetch": "^2.6.1"
+	},
+	"bugs": {
+		"url": "https://github.com/EpicGamer007/Obby/issues"
+	},
+	"homepage": "https://github.com/EpicGamer007/Obby#README.md"
 }
