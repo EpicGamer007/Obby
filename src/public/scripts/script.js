@@ -135,7 +135,8 @@ const vars = {
 const powerupManager = new PowerupManager(player, wall, vars);
 scene.add(powerupManager);
 
-const platformManager = new PlatformManager(scene, player, wall);
+const platformManager = new PlatformManager(player, wall);
+scene.add(platformManager);
 
 let gameOver = () => {
 	document.exitPointerLock();
@@ -271,7 +272,7 @@ function render(time) {
 		player.position.addScaledVector(trueDir, vars.fs);
 	}
 
-	const platforms = platformManager.platforms;
+	const platforms = platformManager.children;
 
 	let objs = down.intersectObjects(platforms);
 	if(objs.length == 0)  {
