@@ -1,5 +1,5 @@
-import { Mesh } from '/lib/three.min.mjs';
-import rand from '/scripts/rand.mjs';
+import { Mesh } from '/lib/three.min.js';
+import rand from '/scripts/rand.js';
 
 export default class Powerup extends Mesh {
 	

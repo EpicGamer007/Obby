@@ -1,6 +1,6 @@
-import * as Powerups from '/scripts/powerups/Powerups.mjs';
-import rand from '/scripts/rand.mjs';
-import { Object3D } from '/lib/three.min.mjs';
+import * as Powerups from '/scripts/powerups/Powerups.js';
+import rand from '/scripts/rand.js';
+import { Object3D } from '/lib/three.min.js';
 
 export default class PowerupManager extends Object3D {
 
@@ -28,7 +28,6 @@ export default class PowerupManager extends Object3D {
 		}
 
 		if(this.player.position.z > this.limit) {
-			console.log('new powerup spawned');
 			let newPowerup = new [Powerups.JumpPowerup, Powerups.SpeedPowerup, Powerups.ScareElmoPowerup, Powerups.FlyPowerup][Math.floor(rand(0, 4))](this.vars);
 			newPowerup.position.set(rand(-10, 10), 10+rand(-5, 5), this.limit+50);
 			this.add(newPowerup);

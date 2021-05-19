@@ -1,5 +1,5 @@
-import rand from '/scripts/rand.mjs';
-import { Vector3, Mesh, PlaneBufferGeometry, MeshPhongMaterial, DoubleSide } from '/lib/three.min.mjs';
+import rand from '/scripts/rand.js';
+import { Vector3, Mesh, PlaneBufferGeometry, MeshPhongMaterial, DoubleSide } from '/lib/three.min.js';
 
 export default class PlatformManager {
 	constructor(scene, player, wall) {

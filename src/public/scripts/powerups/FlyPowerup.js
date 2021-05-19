@@ -1,5 +1,5 @@
-import Powerup from '/scripts/powerups/Powerup.mjs';
-import { OctahedronBufferGeometry, MeshPhongMaterial } from '/lib/three.min.mjs';
+import Powerup from '/scripts/powerups/Powerup.js';
+import { OctahedronBufferGeometry, MeshPhongMaterial } from '/lib/three.min.js';
 
 export default class FlyPowerup extends Powerup {
 	

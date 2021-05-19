@@ -113,14 +113,6 @@ class UI {
 		}
 	}
 
-	rect(startX, startY, width, height) {
-		ctx.fillRect(startX, startY, width, height);
-	}
-
-	clearRect(startX, startY, width, height) {
-		ctx.clearRect(startX, startY, width, height);
-	}
-
 	// in script.js
 	// ui.render({cooldown})
 

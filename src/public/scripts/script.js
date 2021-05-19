@@ -1,9 +1,9 @@
-import * as Three from '/lib/three.min.mjs';
-import Stats from '/lib/stats.min.mjs';
-import rand from '/scripts/rand.mjs';
-import PowerupManager from '/scripts/PowerupManager.mjs';
-import PlatformManager from '/scripts/PlatformManager.mjs';
-import ui from '/scripts/ui.mjs';
+import * as Three from '/lib/three.min.js';
+import Stats from '/lib/stats.min.js';
+import rand from '/scripts/rand.js';
+import PowerupManager from '/scripts/PowerupManager.js';
+import PlatformManager from '/scripts/PlatformManager.js';
+import ui from '/scripts/ui.js';
 
 const scoreToken = window.token;
 window.token = undefined;
