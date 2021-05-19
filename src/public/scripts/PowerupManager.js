@@ -13,10 +13,6 @@ export default class PowerupManager extends Object3D {
 		this.spacing = 200;
 	}
 
-	removePowerup(powerup) {
-		this.children.splice(this.children.indexOf(powerup), 1);
-	}
-
 	render() {
 		
 		if(this.children.length && this.wall.position.z > this.children[0].position.z) {

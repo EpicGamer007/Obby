@@ -125,9 +125,10 @@ class UI {
 		for(let i = 0; i < this.powerupBars.length; i++) {
 
 			const current = new Date().getTime();
-			const powerupObject = this.powerupBars[i];		
-
+			const powerupObject = this.powerupBars[i];
+			
 			const timePassed = current - powerupObject.hitTime;
+			
 			const cooldown = powerupObject.obj.cooldown * 1000;
 			
 			if(timePassed >= cooldown) {
@@ -149,6 +150,12 @@ class UI {
 			// ctx.strokeRect(...params);
 		}
 
+	}
+
+	adjustPowerupTime(pauseTime) {
+		for(let powerup of this.powerupBars) {
+			powerup.hitTime += pauseTime;
+		}
 	}
 
 /*

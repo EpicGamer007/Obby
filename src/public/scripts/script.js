@@ -175,6 +175,15 @@ let gameOver = () => {
 }
 
 let game = {
+
+	/* get timeSincePaused() {
+		if(paused) {
+			return new Date.getTime() - timeAtPause;
+		} else {
+			return 0;
+		}
+	} */
+
 	get paused() {
 		return this._paused;
 	},
@@ -183,9 +192,12 @@ let game = {
 		if(!val) {
 			this.reqID = requestAnimationFrame(render);
 			canvas.requestPointerLock();
+			this.timePaused = (new Date()).getTime() - this.timeAtPause;
+			ui.adjustPowerupTime(this.timePaused);
 		} else {
 			document.exitPointerLock();
 			cancelAnimationFrame(this.reqID);
+			this.timeAtPause = (new Date()).getTime();
 		}
 
 		document.getElementById("pause-menu").style.display = val ? "block" : "none";
@@ -288,8 +300,7 @@ function render(time) {
 		if(objs.length) {
 			objs[0].object.hit();
 			ui.addPowerupBar(objs[0].object);
-			console.log(objs[0].object);
-			powerupManager.removePowerup(objs[0].object);
+			powerupManager.remove(objs[0].object);
 		}
 
 	});
