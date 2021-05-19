@@ -359,7 +359,7 @@ onkeypress = e => {
 };
 
 function giveSurprise() {
-	location.href = "https://Surprise-1.dakshg.repl.co";
+	location.href = "https://Surprise-1.dakshg.repl.co/video.mp4";
 }
 
 onkeyup = e => {

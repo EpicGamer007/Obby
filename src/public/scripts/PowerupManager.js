@@ -24,7 +24,8 @@ export default class PowerupManager extends Object3D {
 		}
 
 		if(this.player.position.z > this.limit) {
-			let newPowerup = new [Powerups.JumpPowerup, Powerups.SpeedPowerup, Powerups.ScareElmoPowerup, Powerups.FlyPowerup][Math.floor(rand(0, 4))](this.vars);
+			//let newPowerup = new [Powerups.JumpPowerup, Powerups.SpeedPowerup, Powerups.ScareElmoPowerup, Powerups.FlyPowerup][Math.floor(rand(0, 4))](this.vars);
+			let newPowerup = new Powerups.FlyPowerup(this.vars);
 			newPowerup.position.set(rand(-10, 10), 10+rand(-5, 5), this.limit+50);
 			this.add(newPowerup);
 			this.limit += this.spacing;
