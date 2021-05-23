@@ -14,9 +14,8 @@ export default class PlatformManager extends Object3D {
 		this.limit = 250;
 		this.originalLimit = this.limit;
 
-		for(let i = 0; i <= this.limit; i += this.spacing) {
+		for(let i = 0; i <= this.limit; i += this.spacing)
 			this.add(new Platforms.NormalPlatform(new Vector3(0, 0, i)));
-		}
 
 		this.children[0].position.setY(0);
 		this.children[0].scale.setX(1);
@@ -25,6 +24,9 @@ export default class PlatformManager extends Object3D {
 	}
 
 	render() {
+		for(const platform of this.children) {
+			platform.render();
+		}
 		if(this.children.length > 1) {
 
 			if(this.wall.position.z > this.children[0].position.z) {
@@ -36,7 +38,8 @@ export default class PlatformManager extends Object3D {
 
 			if(lastZ - this.player.position.z < 200) {
 				let newZ = lastZ + this.spacing;
-				this.add(new Platforms.NormalPlatform(new Vector3(0, 0, newZ)));
+				let newPlatform = new [Platforms.NormalPlatform, Platforms.MovingPlatformLR, Platforms.MovingPlatformUD][Math.floor(rand(0, 3))](new Vector3(0, 0, newZ));
+				this.add(newPlatform);
 			}
 		}
 	}

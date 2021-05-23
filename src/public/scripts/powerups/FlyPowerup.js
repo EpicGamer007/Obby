@@ -14,7 +14,7 @@ export default class FlyPowerup extends Powerup {
 	}
 
 	apply() {
-		this.vars.g = -0.001;
+		this.vars.g = -0.0001;
 	}
 
 	unapply() {
