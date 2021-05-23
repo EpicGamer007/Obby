@@ -22,7 +22,7 @@ export default class Player extends Object3D {
 			this.position,
 			new Vector3(0, -1, 0),
 			0.1,
-			this.height
+			this.height + 0.1
 		);
 
 		this.up = new Raycaster(
@@ -59,21 +59,24 @@ export default class Player extends Object3D {
 		if(objs.length == 0)  {
 			this.position.y -= this.vars.fg;
 			this.vars.fg += this.vars.g;
-		} else this.vars.fg = 0;
+		} else {
+			this.vars.fg = 0;
+			this.position.y = objs[0].point.y + this.height;
+		}
 
 		objs = this.up.intersectObjects(this.platforms);
 		if(objs.length) {
 			this.vars.fj = 0;
 		}
 
-		objs = this.dirRay.intersectObjects(this.platforms);
+		/* objs = this.dirRay.intersectObjects(this.platforms);
 		if(objs.length) {
 
 			let normal = new Vector3(0, 0, 1);
 			normal.applyQuaternion(objs[0].object.quaternion);
 			this.position.addScaledVector(normal, this.vars.pushback);
 
-		}	
+		} */
 
 		[this.down, this.up, this.dirRay].forEach(ray => {
 
