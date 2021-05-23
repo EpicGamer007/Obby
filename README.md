@@ -5,10 +5,8 @@ Check it out at https://obby.epicgamer007.repl.co
 
 ## Ideas
 
-* Mess around with colors
-* Platforms that move side to side
 * Platforms that rotate
-* Platforms that move up and down
+
 * Platforms that make u slower
 * platforms u can only stay on for a bit
 * Lasers
