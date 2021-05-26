@@ -5,8 +5,6 @@ Check it out at https://obby.epicgamer007.repl.co
 
 ## Ideas
 
-* Platforms that rotate
-
 * Platforms that make u slower
 * platforms u can only stay on for a bit
 * Lasers
