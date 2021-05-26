@@ -5,6 +5,7 @@ export default class RotatingPlatform extends Platform {
 	constructor(pos) {
 		super(pos);
 		this.speed = 0.01 * (rand(0, 1) < 0.5 ? 1 : -1);
+		
 	}
 	
 	render() {

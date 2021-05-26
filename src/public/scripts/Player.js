@@ -45,14 +45,18 @@ export default class Player extends Object3D {
 		this.dir.add(new Vector3(x, 0, z));
 	}
 
+	applyDir(force) {
+		const angle = Math.atan2(this.dir.z, this.dir.x) + this.rotation.y - Math.PI/2;
+		const trueDir = new Vector3(-Math.sin(angle), 0, -Math.cos(angle));
+		this.dirRay.set(this.position, trueDir);
+
+		this.position.addScaledVector(trueDir, force);
+	}
+
 	render() {
 
 		if(this.dir.x != 0 || this.dir.z != 0) {
-			const angle = Math.atan2(this.dir.z, this.dir.x) + this.rotation.y - Math.PI/2;
-			const trueDir = new Vector3(-Math.sin(angle), 0, -Math.cos(angle));
-			this.dirRay.set(this.position, trueDir);
-
-			this.position.addScaledVector(trueDir, this.vars.fs);
+			this.applyDir(this.vars.fs);
 		}
 
 		let objs = this.down.intersectObjects(this.platforms);
@@ -69,14 +73,10 @@ export default class Player extends Object3D {
 			this.vars.fj = 0;
 		}
 
-		/* objs = this.dirRay.intersectObjects(this.platforms);
+		objs = this.dirRay.intersectObjects(this.platforms);
 		if(objs.length) {
-
-			let normal = new Vector3(0, 0, 1);
-			normal.applyQuaternion(objs[0].object.quaternion);
-			this.position.addScaledVector(normal, this.vars.pushback);
-
-		} */
+			this.applyDir(-this.vars.fs);
+		} 
 
 		[this.down, this.up, this.dirRay].forEach(ray => {
 
