@@ -1,12 +1,13 @@
 import rand from '/scripts/rand.js'
-import { Mesh, PlaneBufferGeometry, MeshPhongMaterial, DoubleSide } from '/lib/three.min.js';
+import { Mesh, PlaneBufferGeometry, CircleGeometry, MeshPhongMaterial, DoubleSide } from '/lib/three.min.js';
 
-const size = 10;
+const minRadius = 5;
+const maxRadius = 10;
 
 const rotFactor = Math.PI / 4;
 
-const xMinScale = 0.5;
-const xMaxScale = 2;
+const minScale = 0.5;
+const maxScale = 2;
 
 const offset = 1;
 const xPosFactor = 5;
@@ -16,15 +17,14 @@ export default class Platform extends Mesh {
 
 	constructor(pos) {
 		super(
-			new PlaneBufferGeometry(size, size),
+			new CircleGeometry(rand(minRadius, maxRadius), Math.floor(rand(1, 7))),
 			new MeshPhongMaterial({color: 0x000000, emissive: rand(0, 0xffffff+1), side: DoubleSide})
 		);
 
-		this.size = size;
 		this.color = this.material.emissive;
 		this.rotFactor = rotFactor;
-		this.xMinScale = xMinScale;
-		this.xMaxScale = xMaxScale;
+		this.minScale = minScale;
+		this.maxScale = maxScale;
 		this.offset = offset;
 		this.xPosFactor = xPosFactor;
 		this.yPosFactor = yPosFactor;
@@ -43,7 +43,10 @@ export default class Platform extends Mesh {
 		));
 		
 		this.rotation.y = rand(-this.rotFactor, this.rotFactor);
-		this.scale.setX(rand(this.xMinScale, this.xMaxScale));
+		this.rotation.z = rand(-this.rotFactor, this.rotFactor);
+		
+		// this.scaleFactor = rand(this.minScale);
+		// this.scale(this.scaleFactor, 0, this.scaleFactor);
 	}
 
 	render() {

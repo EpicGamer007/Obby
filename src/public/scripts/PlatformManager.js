@@ -18,6 +18,7 @@ export default class PlatformManager extends Object3D {
 			this.add(new Platforms.NormalPlatform(new Vector3(0, 0, i)));
 
 		this.children[0].position.setY(0);
+		this.children[0].position.setX(0);
 		this.children[0].scale.setX(1);
 		this.children[0].rotation.y = 0;
 
@@ -38,7 +39,7 @@ export default class PlatformManager extends Object3D {
 
 			if(lastZ - this.player.position.z < 200) {
 				let newZ = lastZ + this.spacing;
-				let newPlatform = new [Platforms.NormalPlatform, Platforms.MovingPlatformLR, Platforms.MovingPlatformUD, Platforms.RotatingPlatform][Math.floor(rand(0, 4))](new Vector3(0, 0, newZ));
+				let newPlatform = new [Platforms.NormalPlatform, Platforms.MovingPlatform, Platforms.NormalPlatform, Platforms.RotatingPlatform][Math.floor(rand(0, 4))](new Vector3(0, 0, newZ));
 				this.add(newPlatform);
 			}
 		}
