@@ -106,6 +106,11 @@ router.get("/leaderboard", async (req, res) => {
 	});
 });
 
+router.get("/loggedout", (req, res) => {
+	if(req.get("X-Replit-User-Name")) res.redirect("/");
+	else res.render("loggedout");
+});
+
 router.post("/score", auth, (req, res) => {
 
 	if(!req.body.token) return res.json({message: "No token"});

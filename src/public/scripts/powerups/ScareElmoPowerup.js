@@ -16,7 +16,4 @@ export default class ScareElmoPowerup extends Powerup {
 		this.vars.wall.position.setZ(this.vars.wall.position.z - 200);
 	}
 
-	unapply() { 
-		// Nothing to unapply
-	}		
 }

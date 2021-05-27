@@ -14,15 +14,10 @@ export default class FlyPowerup extends Powerup {
 	}
 
 	apply() {
-		this.vars.g = -0.001;
+		this.vars.g = -0.0001;
 	}
 
 	unapply() {
-		
-		/* this.vars.maxJump = 0.4;
-		this.vars.j = 0.4;
-		this.vars.shiftSpeed = 0.2; */
-
 		this.vars.g = 0.01;
 	}
 }

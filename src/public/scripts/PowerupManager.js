@@ -10,7 +10,7 @@ export default class PowerupManager extends Object3D {
 		this.vars = vars;
 		this.wall = wall;
 		this.limit = 50;
-		this.spacing = 200;
+		this.spacing = 160;
 	}
 
 	render() {
@@ -25,7 +25,6 @@ export default class PowerupManager extends Object3D {
 
 		if(this.player.position.z > this.limit) {
 			let newPowerup = new [Powerups.JumpPowerup, Powerups.SpeedPowerup, Powerups.ScareElmoPowerup, Powerups.FlyPowerup][Math.floor(rand(0, 4))](this.vars);
-			// let newPowerup = new Powerups.FlyPowerup(this.vars);
 			newPowerup.position.set(rand(-10, 10), 10+rand(-5, 5), this.limit+50);
 			this.add(newPowerup);
 			this.limit += this.spacing;
@@ -33,17 +32,3 @@ export default class PowerupManager extends Object3D {
 	}
 
 };
-
-/* 
-let powerup = new SpeedPowerup(vars);
-powerup.mesh.position.set(0, 10, 50);
-scene.add(powerup.mesh);
-
-let jump = new JumpPowerup(vars);
-jump.mesh.position.set(0, 10, 80);
-scene.add(jump.mesh);
-
-let scare = new ScareElmoPowerup(vars);
-scare.mesh.position.set(0, 10, 100);
-scene.add(scare.mesh);
-*/

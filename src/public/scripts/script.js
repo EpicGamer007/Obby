@@ -4,12 +4,22 @@ import rand from '/scripts/rand.js';
 import PowerupManager from '/scripts/PowerupManager.js';
 import PlatformManager from '/scripts/PlatformManager.js';
 import ui from '/scripts/ui.js';
+import Player from '/scripts/Player.js';
 
 const scoreToken = window.token;
 window.token = undefined;
 
-onresize = () => location.reload();
-
+onresize = () => {
+	location.reload();
+	if(location.pathname !== "/") return;
+	fetch("/exit", {
+		method: "POST",
+		body: JSON.stringify({token: scoreToken}),
+		headers: {
+			'Content-Type': 'application/json'
+		},
+	});
+}
 const userInfo = document.getElementById('user-info');
 
 const canvas = document.getElementById('c');
@@ -74,13 +84,6 @@ wall.add(back);
 wall.position.set(0, -100, -500);
 scene.add(wall);
 
-const player = new Three.Object3D();
-player.add(camera);
-player.position.z = 3;
-player.position.y = 5;
-scene.add(player);
-
-let dir = new Three.Vector3();
 let keys = new Set();
 const possibleKeys = new Set(['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'KeyA', 'KeyP', 'KeyD', 'KeyS', 'KeyW', 'Space']);
 
@@ -92,29 +95,6 @@ stats.dom.style=`
 	left: 0px;
 `;
 document.body.appendChild(stats.dom);
-
-const playerHeight = 3;
-
-const down = new Three.Raycaster(
-	player.position,
-	new Three.Vector3(0, -1, 0),
-	0.1,
-	playerHeight
-);
-
-const up = new Three.Raycaster(
-	player.position,
-	new Three.Vector3(0, 1, 0),
-	0.1,
-	1
-);
-
-const dirRay = new Three.Raycaster(
-	player.position,
-	new Three.Vector3(0, 1, 0),
-	0.1,
-	2
-);
 
 const startMaxSpeed = 0.3, startMaxJump = 0.4;
 
@@ -132,10 +112,17 @@ const vars = {
 	camera
 };
 
+const player = new Player(camera, ui, vars);
+scene.add(player);
+
 const powerupManager = new PowerupManager(player, wall, vars);
 scene.add(powerupManager);
 
-const platformManager = new PlatformManager(scene, player, wall);
+const platformManager = new PlatformManager(player, wall);
+scene.add(platformManager);
+
+player.platforms = platformManager.children;
+player.powerupManager = powerupManager;
 
 let gameOver = () => {
 	document.exitPointerLock();
@@ -145,15 +132,27 @@ let gameOver = () => {
 	replay.id = "replay";
 	replay.innerText = "Restart";
 	replay.addEventListener("click", (e) => {
+		if(location.pathname === "/") {
+			fetch("/exit", {
+				method: "POST",
+				body: JSON.stringify({token: scoreToken}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+			});
+		}
 		location.reload();
 	});
 	main.appendChild(replay);
+
 	const s = document.createElement("p");
 	s.innerText = "Score: " + score;s.id = "score";
 	main.insertBefore(s, userInfo);
 	const a = document.createElement("a");
 	a.innerText = "Leaderboard";a.href = "/leaderboard";
 	main.insertBefore(a, document.getElementById("center"));
+
+	if(location.pathname !== "/") return;
 
 	fetch("/score", {
 		method: "POST",
@@ -170,20 +169,9 @@ let gameOver = () => {
 			document.createElement("p")
 		).innerHTML = "Error adding score:<br> " + err;
 	});
-	
-	console.log(score);
 }
 
 let game = {
-
-	/* get timeSincePaused() {
-		if(paused) {
-			return new Date.getTime() - timeAtPause;
-		} else {
-			return 0;
-		}
-	} */
-
 	get paused() {
 		return this._paused;
 	},
@@ -212,10 +200,6 @@ document.getElementById("resume").onclick = () => {
 	game.paused = false;
 };
 
-/* setInterval(() => {
-	console.log(powerupManager.children);
-}, 500); */
-
 function render(time) {
 
 	if(player.position.y < -50000) {
@@ -234,19 +218,6 @@ function render(time) {
 
 	time *= 0.001;
 
-	/* cube.rotation.x = time;
-	cube.rotation.y = time; */
-
-	//console.log(dir);
-
-	/* userInfo.innerHTML = `	
-		x: ${player.position.x.toFixed(2)}<br>
-		y: ${player.position.y.toFixed(2)}<br>
-		z: ${player.position.z.toFixed(2)}<br>
-		dir: {x: ${dir.x}, y: ${dir.y}, z: ${dir.z}}<br>
-		player.rotation.y: ${player.rotation.y.toFixed(2)}
-	`; */
-
 	userInfo.innerHTML = `	
 		x: ${player.position.x.toFixed(2)}<br>
 		y: ${player.position.y.toFixed(2)}<br>
@@ -255,7 +226,6 @@ function render(time) {
 
 	wall.position.z += 0.35;
 	
-	
 	powerupManager.render();
 	platformManager.render();
 
@@ -263,47 +233,7 @@ function render(time) {
 
 	if(keys.size == 0) vars.fs *= 0.85;
 
-	if(dir.x != 0 || dir.z != 0) {
-		const angle = Math.atan2(dir.z, dir.x) + player.rotation.y - Math.PI/2;
-		const trueDir = new Three.Vector3(-Math.sin(angle), 0, -Math.cos(angle));
-		dirRay.set(player.position, trueDir);
-
-		player.position.addScaledVector(trueDir, vars.fs);
-	}
-
-	const platforms = platformManager.platforms;
-
-	let objs = down.intersectObjects(platforms);
-	if(objs.length == 0)  {
-		player.position.y -= vars.fg;
-		vars.fg += vars.g;
-	} else vars.fg = 0;
-
-	objs = up.intersectObjects(platforms);
-	if(objs.length) {
-		vars.fj = 0;
-	}
-
-	objs = dirRay.intersectObjects(platforms);
-	if(objs.length) {
-
-		let normal = new Three.Vector3(0, 0, 1);
-		normal.applyQuaternion(objs[0].object.quaternion);
-		player.position.addScaledVector(normal, 	vars.pushback);
-
-	}			
-
-	[down, up, dirRay].forEach(ray => {
-
-		objs = ray.intersectObjects(powerupManager.children);
-
-		if(objs.length) {
-			objs[0].object.hit();
-			ui.addPowerupBar(objs[0].object);
-			powerupManager.remove(objs[0].object);
-		}
-
-	});
+	player.render();
 	
 	if(!keys.has('Space') && vars.fg == 0) vars.fj=0;
 
@@ -317,31 +247,27 @@ function render(time) {
 
 }
 
-function addDir(x, z) {
-	dir.add(new Three.Vector3(x, 0, z));
-}
-
 onkeypress = e => {
 
 	if(keys.has(e.code)||!possibleKeys.has(e.code)) return;
-	if(keys.size == 0) dir.set(0, 0, 0);
+	if(keys.size == 0) player.dir.set(0, 0, 0);
 
 	switch (e.code) {
 		case 'ArrowLeft':
 		case 'KeyA':
-			addDir(-1, 0);
+			player.addDir(-1, 0);
 			break;
 		case 'ArrowRight':
 		case 'KeyD':
-			addDir(1, 0);
+			player.addDir(1, 0);
 			break;
 		case 'ArrowDown':
 		case 'KeyS':
-			addDir(0, -1);
+			player.addDir(0, -1);
 			break;
 		case 'ArrowUp':
 		case 'KeyW':
-			addDir(0, 1);
+			player.addDir(0, 1);
 			break;
 		case 'Space':
 			vars.fj = vars.j;
@@ -368,19 +294,19 @@ onkeyup = e => {
 		switch (e.code) {
 			case 'ArrowLeft':
 			case 'KeyA':
-				addDir(1, 0);
+				player.addDir(1, 0);
 				break;
 			case 'ArrowRight':
 			case 'KeyD':
-				addDir(-1, 0);
+				player.addDir(-1, 0);
 				break;
 			case 'ArrowDown':
 			case 'KeyS':
-				addDir(0, 1);
+				player.addDir(0, 1);
 				break;
 			case 'ArrowUp':
 			case 'KeyW':
-				addDir(0, -1);
+				player.addDir(0, -1);
 		}
 
 	keys.delete(e.code);
@@ -410,6 +336,7 @@ function makePlatform(w, h, pos, emissive, color = 0x000000) {
 }
 
 window.addEventListener("beforeunload", (evt) => {
+	if(location.pathname !== "/") return;
 	fetch("/exit", {
 		method: "POST",
 		body: JSON.stringify({token: scoreToken}),
