@@ -43,7 +43,8 @@ export default class PlatformManager extends Object3D {
 
 			if(lastZ - this.player.position.z < 200) {
 				let newZ = lastZ + this.spacing;
-				let newPlatform = new [Platforms.NormalPlatform, Platforms.MovingPlatform, Platforms.NormalPlatform, Platforms.RotatingPlatform, Platforms.DisappearingPlatform][Math.floor(rand(0, 5))](new Vector3(0, 0, newZ));
+				let toChoose = [Platforms.NormalPlatform, Platforms.MovingPlatform, Platforms.NormalPlatform, Platforms.RotatingPlatform, Platforms.DisappearingPlatform];
+				let newPlatform = new toChoose[Math.floor(rand(0, toChoose.length))](new Vector3(0, 0, newZ));
 				this.add(newPlatform);
 			}
 		}
