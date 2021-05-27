@@ -26,6 +26,10 @@ export default class PlatformManager extends Object3D {
 
 	render() {
 		for(const platform of this.children) {
+			if(platform.material.opacity === 0) {
+				this.remove(platform);
+				continue;
+			}
 			platform.render();
 		}
 		if(this.children.length > 1) {
@@ -39,7 +43,7 @@ export default class PlatformManager extends Object3D {
 
 			if(lastZ - this.player.position.z < 200) {
 				let newZ = lastZ + this.spacing;
-				let newPlatform = new [Platforms.NormalPlatform, Platforms.MovingPlatform, Platforms.NormalPlatform, Platforms.RotatingPlatform][Math.floor(rand(0, 4))](new Vector3(0, 0, newZ));
+				let newPlatform = new [Platforms.NormalPlatform, Platforms.MovingPlatform, Platforms.NormalPlatform, Platforms.RotatingPlatform, Platforms.DisappearingPlatform][Math.floor(rand(0, 5))](new Vector3(0, 0, newZ));
 				this.add(newPlatform);
 			}
 		}

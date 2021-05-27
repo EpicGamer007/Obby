@@ -12,7 +12,6 @@ export default class Player extends Object3D {
 		this.powerupManager = undefined;
 
 		this.add(camera);
-		this.position.z = 3;
 		this.position.y = 5;
 
 		this.height = 3;
@@ -55,17 +54,18 @@ export default class Player extends Object3D {
 
 	render() {
 
-		if(this.dir.x != 0 || this.dir.z != 0) {
+		if(this.dir.x !== 0 || this.dir.z !== 0) {
 			this.applyDir(this.vars.fs);
 		}
 
 		let objs = this.down.intersectObjects(this.platforms);
-		if(objs.length == 0)  {
+		if(objs.length === 0)  {
 			this.position.y -= this.vars.fg;
 			this.vars.fg += this.vars.g;
 		} else {
 			this.vars.fg = 0;
 			this.position.y = objs[0].point.y + this.height;
+			objs[0].object.hit();
 		}
 
 		objs = this.up.intersectObjects(this.platforms);

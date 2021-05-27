@@ -132,9 +132,19 @@ let gameOver = () => {
 	replay.id = "replay";
 	replay.innerText = "Restart";
 	replay.addEventListener("click", (e) => {
+		if(location.pathname === "/") {
+			fetch("/exit", {
+				method: "POST",
+				body: JSON.stringify({token: scoreToken}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+			});
+		}
 		location.reload();
 	});
 	main.appendChild(replay);
+
 	const s = document.createElement("p");
 	s.innerText = "Score: " + score;s.id = "score";
 	main.insertBefore(s, userInfo);

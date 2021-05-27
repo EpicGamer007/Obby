@@ -17,8 +17,8 @@ export default class Platform extends Mesh {
 
 	constructor(pos) {
 		super(
-			new CircleGeometry(rand(minRadius, maxRadius), Math.floor(rand(1, 7))),
-			new MeshPhongMaterial({color: 0x000000, emissive: rand(0, 0xffffff+1), side: DoubleSide})
+			new CircleGeometry(rand(minRadius, maxRadius), Math.floor(rand(1, 10))),
+			new MeshPhongMaterial({color: 0x000000, emissive: rand(0, 0xffffff+ 1), side: DoubleSide})
 		);
 
 		this.color = this.material.emissive;
@@ -44,11 +44,9 @@ export default class Platform extends Mesh {
 		
 		this.rotation.y = rand(-this.rotFactor, this.rotFactor);
 		this.rotation.z = rand(-this.rotFactor, this.rotFactor);
-		
-		// this.scaleFactor = rand(this.minScale);
-		// this.scale(this.scaleFactor, 0, this.scaleFactor);
 	}
 
-	render() {
-	}
+	render() {}
+
+	hit() {}
 }
