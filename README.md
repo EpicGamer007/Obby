@@ -29,7 +29,7 @@ Make sure to check out the leaderboard at `/leaderboard`. If you want your name 
 
 ## Feedback (Work in Progress) ##
 
-* Add sensitivty option
+* Add sensitivity option
 * Add arrow or some way to indicate which way to go at the start.
 * Github auth (because only 9 year olds use replit)
 
