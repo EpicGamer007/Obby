@@ -61,24 +61,6 @@ class UI {
 		ctx.strokeStyle = '#000000';
 	}
 
-	/**
-	 * Draws a rounded rectangle using the current state of the canvas.
-	 * If you omit the last three params, it will draw a rectangle
-	 * outline with a 5 pixel border radius
-	 * @param {CanvasRenderingContext2D} ctx
-	 * @param {Number} x The top left x coordinate
-	 * @param {Number} y The top left y coordinate
-	 * @param {Number} width The width of the rectangle
-	 * @param {Number} height The height of the rectangle
-	 * @param {Number} [radius = 5] The corner radius; It can also be an object 
-	 *                 to specify different radii for corners
-	 * @param {Number} [radius.tl = 0] Top left
-	 * @param {Number} [radius.tr = 0] Top right
-	 * @param {Number} [radius.br = 0] Bottom right
-	 * @param {Number} [radius.bl = 0] Bottom left
-	 * @param {Boolean} [fill = false] Whether to fill the rectangle.
-	 * @param {Boolean} [stroke = true] Whether to stroke the rectangle.
-	 */
 	roundRect(x, y, width, height, fill = true, radius = 5, stroke = false) {
 		if (typeof stroke === 'undefined') {
 			stroke = true;
@@ -113,13 +95,7 @@ class UI {
 		}
 	}
 
-	// in script.js
-	// ui.render({cooldown})
-
 	render() {
-		// this.rect(0, 0, canvas.width, canvas.height);
-		// console.log(this.powerupBars);
-		// ctx.fillRect(0, 0, 500, 500);
 		
 		ctx.clearRect(0, h - this.barHeight - this.yBarMargin - 10, w, this.barHeight + this.yBarMargin);
 		for(let i = 0; i < this.powerupBars.length; i++) {
@@ -147,7 +123,6 @@ class UI {
 				(1 - timePassed / cooldown) * this.barHeight
 			];
 			this.roundRect(...params);
-			// ctx.strokeRect(...params);
 		}
 
 	}
@@ -157,17 +132,6 @@ class UI {
 			powerup.hitTime += pauseTime;
 		}
 	}
-
-/*
-
-
-let hitTime = new Date.getTime();
-while(new Date.getTime() - hitTime < powerup.cooldown * 1000) {
-
-	make the cooldown bar the right height based on powerup.cooldown
-	
-}
-*/
 
 	containsPowerup(powerup) {
 		for(const obj of this.powerupBars)
@@ -189,23 +153,3 @@ while(new Date.getTime() - hitTime < powerup.cooldown * 1000) {
 }
 
 export default new UI();
-
-// ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-/*
-// Set line width
-ctx.lineWidth = 10;
-
-// Wall
-ctx.strokeRect(75, 140, 150, 110);
-
-// Door
-ctx.fillRect(130, 190, 40, 60);
-
-// Roof
-ctx.beginPath();
-ctx.moveTo(50, 140);
-ctx.lineTo(150, 60);
-ctx.lineTo(250, 140);
-ctx.closePath();
-ctx.stroke();*/

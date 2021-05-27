@@ -169,8 +169,6 @@ let gameOver = () => {
 			document.createElement("p")
 		).innerHTML = "Error adding score:<br> " + err;
 	});
-	
-	console.log(score);
 }
 
 let game = {
@@ -219,19 +217,6 @@ function render(time) {
 	ui.render();
 
 	time *= 0.001;
-
-	/* cube.rotation.x = time;
-	cube.rotation.y = time; */
-
-	//console.log(dir);
-
-	/* userInfo.innerHTML = `	
-		x: ${player.position.x.toFixed(2)}<br>
-		y: ${player.position.y.toFixed(2)}<br>
-		z: ${player.position.z.toFixed(2)}<br>
-		dir: {x: ${dir.x}, y: ${dir.y}, z: ${dir.z}}<br>
-		player.rotation.y: ${player.rotation.y.toFixed(2)}
-	`; */
 
 	userInfo.innerHTML = `	
 		x: ${player.position.x.toFixed(2)}<br>

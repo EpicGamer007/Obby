@@ -10,7 +10,7 @@ export default class PowerupManager extends Object3D {
 		this.vars = vars;
 		this.wall = wall;
 		this.limit = 50;
-		this.spacing = 200;
+		this.spacing = 160;
 	}
 
 	render() {

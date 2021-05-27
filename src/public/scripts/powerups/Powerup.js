@@ -11,6 +11,9 @@ export default class Powerup extends Mesh {
 		this.dy = (Math.random() > 0.5?1:-1) * 0.1;
 	}
 
+	apply() {}
+	unapply() {}
+
 	render() {
 		this.rotation.x += this.dx;
 		this.rotation.y += this.dy;
@@ -24,37 +27,3 @@ export default class Powerup extends Mesh {
 	}
 
 }
-
-/* 
-
-in script.js
-
-powerup.hit();
-
-addPowerupBar(powerup);
-
-addPowerupBar(powerup) {
-
-	addBar(powerup);
-
-	setTimeout(() => {
-	
-		barSize--;
-		updatePoerupbar();
-
-	}, powerup.coolDown);
-}
-
- */
-
-
-/*
-
-let pastTime = new Date.getTime();
-while(new Date.getTime() - pastTime < powerup.cooldown * 1000) {
-
-	make the cooldown bar the right height based on powerup.cooldown
-	
-}
-
-*/

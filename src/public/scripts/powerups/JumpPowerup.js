@@ -14,19 +14,10 @@ export default class JumpPowerup extends Powerup {
 	}
 
 	apply() {
-		/* this.vars.maxJump = 0.9;
-		this.vars.j = 0.9;
-		this.vars.shiftJump = 0.3; */
-		
 		this.vars.g = 0.005;
 	}
 
 	unapply() {
-		
-		/* this.vars.maxJump = 0.4;
-		this.vars.j = 0.4;
-		this.vars.shiftSpeed = 0.2; */
-
 		this.vars.g = 0.01;
 	}
 }
