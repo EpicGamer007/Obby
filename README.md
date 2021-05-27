@@ -5,6 +5,4 @@ Check it out at https://obby.epicgamer007.repl.co
 
 ## Ideas
 
-* Platforms that make u slower
-* platforms that break after a bit.
 * Lasers
