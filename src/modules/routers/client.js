@@ -56,7 +56,7 @@ const httpHeaders = {
 
 router.use(rateLimit({
 	windowMs: 60 * 1000,
-	max: 60
+	max: 20
 }));
 
 router.use((_req, res, next) => {
