@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        
+		<%-include("./components/head", {title: "Escape Elmo Game"})%>
+
+		<script type="module" src="/scripts/script.js"></script>
+		
+    </head>
+
+    <body>
+		
+		<%-include("./components/noscript.ejs")%>
+
+		<main>
+		
+			<div id="user-info"></div>
+			<div class="center">
+				<div id="chilc"></div>
+				<div id="pause-menu">
+					<button id="resume">Resume</button>
+				</div>
+			</div>
+			<canvas id="c"></canvas>
+			<canvas id="ui"></canvas>
+
+		</main>
+	</body>
+</html>

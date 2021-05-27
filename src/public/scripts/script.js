@@ -11,6 +11,7 @@ window.token = undefined;
 
 onresize = () => {
 	location.reload();
+	if(location.pathname !== "/") return;
 	fetch("/exit", {
 		method: "POST",
 		body: JSON.stringify({token: scoreToken}),
@@ -140,6 +141,8 @@ let gameOver = () => {
 	const a = document.createElement("a");
 	a.innerText = "Leaderboard";a.href = "/leaderboard";
 	main.insertBefore(a, document.getElementById("center"));
+
+	if(location.pathname !== "/") return;
 
 	fetch("/score", {
 		method: "POST",
@@ -338,6 +341,7 @@ function makePlatform(w, h, pos, emissive, color = 0x000000) {
 }
 
 window.addEventListener("beforeunload", (evt) => {
+	if(location.pathname !== "/") return;
 	fetch("/exit", {
 		method: "POST",
 		body: JSON.stringify({token: scoreToken}),
