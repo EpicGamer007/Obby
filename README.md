@@ -27,7 +27,7 @@ There are also different kinds of platforms:
 
 Make sure to check out the leaderboard at `/leaderboard`. If you want your name on it, make sure to login with replit ;).
 
-## Feedback ##
+## Feedback (Work in Progress) ##
 
 * Add sensitivty option
 * Add arrow or some way to indicate which way to go at the start.
