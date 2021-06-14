@@ -26,6 +26,14 @@ const canvas = document.getElementById('c');
 canvas.width = innerHeight * 4 / 3;
 canvas.height = innerHeight;
 
+const sensitivityFactorElem = document.querySelector("#sensitivity > input");
+
+let sensitivityFactor = 200 - sensitivityFactorElem.value;
+
+sensitivityFactorElem.oninput = () => {
+	sensitivityFactor = 200 - sensitivityFactorElem.value;
+}
+
 const renderer = new Three.WebGLRenderer(
 	{ canvas, antialias: true }
 );
@@ -315,8 +323,8 @@ onkeyup = e => {
 
 onmousemove = e => {
 	if (document.pointerLockElement) {
-		player.rotation.y -= e.movementX / 100;
-		camera.rotation.x -= e.movementY / 100;
+		player.rotation.y -= e.movementX / sensitivityFactor; // this is all we need to change for sensitivity
+		camera.rotation.x -= e.movementY / sensitivityFactor; // default was 100 before, remember that ig, ok
 	}
 }
 

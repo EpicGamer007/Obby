@@ -2,7 +2,7 @@
 A parkour game where you run away from elmo! With a leaderboard.
 
 ## The Game ##
-Your goal is to run as far as you can before falling down or elmo eating you.
+Your goal is to run as far as you can before falling down or elmo eating you. Kind of like temple run (If you know what that is, pog).
 
 * WASD to move
   * W - Forward
@@ -28,8 +28,8 @@ There are also different kinds of platforms:
 Make sure to check out the leaderboard at `/leaderboard`. If you want your name on it, make sure to login with replit ;).
 
 ## Feedback (Work in Progress) ##
-
-* Add sensitivity option
+* Currently working on achievements 
+* ~~Add sensitivity option~~ (Done 6/13/2021)
 * Add arrow or some way to indicate which way to go at the start.
 * Github auth (because only 9 year olds use replit)
 
