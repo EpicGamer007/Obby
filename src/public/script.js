@@ -219,7 +219,6 @@ function render(time) {
 	stats.begin();
 	
 	ui.render();
-	arrows.render();
 
 	time *= 0.001;
 
