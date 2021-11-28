@@ -27,12 +27,6 @@ There are also different kinds of platforms:
 
 Make sure to check out the leaderboard at `/leaderboard`. If you want your name on it, make sure to login with replit ;).
 
-## Feedback (Work in Progress) ##
-* Currently working on achievements 
-* ~~Add sensitivity option~~ (Done 6/13/2021)
-* Add arrow or some way to indicate which way to go at the start.
-* Github auth (because only 9 year olds use replit)
-
 ## Developers ##
 * Abhay
   * https://github.com/EpicGamer007
