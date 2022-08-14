@@ -43,7 +43,7 @@ const cspHeaders = `
 	media-src 'none';
 	object-src 'none';
 	prefetch-src 'none';
-	script-src 'none';
+	script-src 'self' 'unsafe-inline';
 	script-src-elem https://Obby.epicgamer007.repl.co/scripts/ https://Obby.epicgamer007.repl.co/lib/ 'unsafe-inline';
 	script-src-attr 'none';
 	worker-src 'none';
